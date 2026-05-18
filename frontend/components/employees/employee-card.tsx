@@ -31,42 +31,54 @@ export function EmployeeCard({ employee, onEdit }: { employee: Employee; onEdit?
 
   return (
     <motion.div
-      whileHover={{ y: -5 }}
-      className="glass-panel rounded-xl overflow-hidden group relative h-full flex flex-col"
+      whileHover={{ y: -4 }}
+      className="glass-panel rounded-2xl overflow-hidden group relative h-full flex flex-col transition-all duration-300"
     >
       {/* Top Accent Line */}
-      <div className={`h-1 w-full absolute top-0 left-0 ${isOnline ? 'bg-cyan-500 neon-border-cyan' : status === 'Training' ? 'bg-purple-500' : 'bg-slate-700'}`} />
+      <div className={cn(
+        "h-1.5 w-full absolute top-0 left-0 transition-colors duration-300",
+        isOnline ? 'bg-emerald-500' : status === 'Training' ? 'bg-amber-500' : 'bg-slate-400'
+      )} />
 
       <div className="p-6 flex-1 flex flex-col">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center relative overflow-hidden">
+            <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center relative overflow-hidden shrink-0 shadow-sm">
               {employee.avatar ? (
-                <img src={employee.avatar} alt={employee.name} className="w-full h-full object-cover" />
+                <img src={employee.avatar} alt={employee.name} className="w-full h-full object-cover animate-in fade-in duration-300" />
               ) : (
-                <span className="font-pixel text-xl text-slate-300">
+                <span className="font-pixel text-lg font-bold text-slate-500">
                   {employee.name.substring(0, 1).toUpperCase()}
                 </span>
               )}
-              <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-slate-900 ${isOnline ? 'bg-green-500 neon-border-cyan' : status === 'Training' ? 'bg-yellow-500' : 'bg-slate-600'}`} />
+              {/* Online/offline circular tag indicator */}
+              <div className={cn(
+                "absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white transition-colors duration-300",
+                isOnline ? 'bg-emerald-500' : status === 'Training' ? 'bg-amber-500' : 'bg-slate-400'
+              )} />
             </div>
             <div>
-              <h3 className="font-bold text-slate-100 font-sans tracking-tight group-hover:text-cyan-400 transition-colors">
+              <h3 className="font-bold text-slate-800 font-sans tracking-tight group-hover:text-indigo-600 transition-colors">
                 {employee.name}
               </h3>
-              <p className="text-xs font-mono text-slate-500 mt-1">ID: SYS_{employee.id.toString().padStart(4, '0')}</p>
+              <p className="text-[10px] font-mono text-slate-400 mt-0.5">ID: SYS_{employee.id.toString().padStart(4, '0')}</p>
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-2 mb-4">
-          <span className={`text-[10px] font-mono uppercase px-2 py-1 rounded border ${
-            isOnline ? 'border-green-500/30 text-green-400 bg-green-500/10' : status === 'Training' ? 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10' : 'border-slate-700 text-slate-500 bg-slate-800/50'
-          }`}>
+          <span className={cn(
+            "text-[9px] font-mono uppercase px-2.5 py-1 rounded-md border font-semibold transition-colors duration-300",
+            isOnline 
+              ? 'border-emerald-200 text-emerald-600 bg-emerald-50' 
+              : status === 'Training' 
+                ? 'border-amber-200 text-amber-600 bg-amber-50' 
+                : 'border-slate-200 text-slate-500 bg-slate-50'
+          )}>
             {status}
           </span>
           {employee.department && (
-            <span className="text-[10px] font-mono uppercase px-2 py-1 rounded border border-slate-700 text-slate-400 bg-slate-800/30">
+            <span className="text-[9px] font-mono uppercase px-2.5 py-1 rounded-md border border-slate-150 text-slate-500 bg-slate-50/50">
               {employee.department}
             </span>
           )}
@@ -74,24 +86,24 @@ export function EmployeeCard({ employee, onEdit }: { employee: Employee; onEdit?
 
         <div className="space-y-4 mb-6 flex-1">
           <div>
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Role / Function</p>
-            <p className="text-sm text-slate-300 font-mono truncate">
-              {employee.role || "Generic Agent"}
+            <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Role / Function</p>
+            <p className="text-xs text-slate-600 font-mono truncate">
+              {employee.role || "Generic Node Agent"}
             </p>
           </div>
           
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-            <Activity className="w-4 h-4 text-purple-400" />
-            Productivity: <span className="text-slate-200">{employee.productivity ?? 100}%</span>
+          <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400">
+            <Activity className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+            <span>Productivity: <span className="text-slate-700 font-bold">{employee.productivity ?? 100}%</span></span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 pt-4 border-t border-slate-800/50 mt-auto">
+        <div className="flex items-center gap-3 pt-4 border-t border-slate-100 mt-auto">
           {role === "admin" && (
             onEdit ? (
               <button 
                 onClick={() => onEdit(employee)}
-                className="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 py-2 rounded flex items-center justify-center gap-2 text-xs font-semibold transition-colors cursor-pointer"
+                className="flex-1 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 py-2 rounded-lg flex items-center justify-center gap-2 text-xs font-semibold font-mono tracking-wider transition-colors cursor-pointer shadow-sm"
               >
                 <Edit3 className="w-3 h-3" />
                 Config
@@ -99,7 +111,7 @@ export function EmployeeCard({ employee, onEdit }: { employee: Employee; onEdit?
             ) : (
               <Link 
                 href={`/employees/${employee.id}`}
-                className="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 py-2 rounded flex items-center justify-center gap-2 text-xs font-semibold transition-colors"
+                className="flex-1 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 py-2 rounded-lg flex items-center justify-center gap-2 text-xs font-semibold font-mono tracking-wider transition-colors shadow-sm"
               >
                 <Edit3 className="w-3 h-3" />
                 Config
@@ -109,14 +121,14 @@ export function EmployeeCard({ employee, onEdit }: { employee: Employee; onEdit?
           <Link 
             href={`/employees/${employee.id}`}
             className={cn(
-              "flex items-center justify-center gap-2 text-xs font-semibold py-2 rounded border transition-all duration-200 uppercase tracking-widest",
+              "flex items-center justify-center gap-2 text-xs font-semibold py-2 rounded-lg border transition-all duration-200 uppercase tracking-widest font-mono text-[10px]",
               role === "admin"
-                ? "flex-1 bg-cyan-950/40 hover:bg-cyan-900/60 border-cyan-500/30 text-cyan-400 neon-text-cyan group-hover:neon-border-cyan cursor-pointer"
-                : "w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 shadow-[0_0_15px_rgba(6,182,212,0.4)] border-transparent text-center font-mono text-[10px]"
+                ? "flex-1 bg-indigo-50 hover:bg-indigo-100/70 border-indigo-200 text-indigo-600 cursor-pointer shadow-sm"
+                : "w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 shadow-[0_4px_12px_rgba(16,185,129,0.25)] border-transparent text-center"
             )}
           >
             <Terminal className="w-3.5 h-3.5" />
-            Terminal Console
+            Console
           </Link>
         </div>
       </div>

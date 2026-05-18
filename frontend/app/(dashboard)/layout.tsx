@@ -13,7 +13,7 @@ export default function DashboardLayout({
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-0">
         <Topbar />
         
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-slate-950 via-[#0a0f1c] to-slate-950">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-slate-50 via-white to-slate-100">
           {children}
         </main>
       </div>

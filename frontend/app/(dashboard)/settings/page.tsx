@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Settings, Database, Cpu, Eye, Volume2, Save, Terminal, Shield, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export default function SettingsPage() {
   const [dbStatus, setDbStatus] = useState("Connected");
@@ -37,7 +38,8 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 pb-12 relative z-10 font-sans">
+    <div className="max-w-5xl mx-auto space-y-8 pb-12 relative z-10 font-sans text-slate-850">
+      
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
@@ -45,7 +47,7 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-24 right-8 z-50 bg-cyan-950/90 border border-cyan-500/50 text-cyan-400 px-4 py-3 rounded-lg shadow-[0_0_15px_rgba(6,182,212,0.3)] font-mono text-sm backdrop-blur-md"
+            className="fixed top-24 right-8 z-50 bg-white/95 border border-slate-200 text-slate-800 px-4 py-3 rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.08)] font-mono text-xs backdrop-blur-md font-bold"
           >
             {toastMessage}
           </motion.div>
@@ -53,14 +55,14 @@ export default function SettingsPage() {
       </AnimatePresence>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 bg-slate-900/50 p-6 rounded-2xl border border-slate-800 shadow-inner bg-animated-grid">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 bg-white/70 p-6 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
         <div>
-          <h2 className="text-3xl font-bold font-pixel text-slate-100 uppercase tracking-tight mb-2 flex items-center gap-3">
-            <Settings className="w-8 h-8 text-cyan-400" />
+          <h2 className="text-3xl font-bold font-pixel text-slate-850 uppercase tracking-tight mb-2 flex items-center gap-3">
+            <Settings className="w-8 h-8 text-indigo-650" />
             System Settings
           </h2>
-          <p className="text-cyan-400 font-mono text-sm uppercase tracking-widest mt-2 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+          <p className="text-indigo-650 font-mono text-xs uppercase tracking-widest mt-2 flex items-center gap-2 font-semibold">
+            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
             Sim.OS Central Command Registry
           </p>
         </div>
@@ -72,94 +74,94 @@ export default function SettingsPage() {
         <div className="lg:col-span-2 space-y-6">
           
           {/* AI Engines Panel */}
-          <div className="glass-panel border border-slate-800 p-6 rounded-2xl shadow-xl bg-slate-900/40 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
+          <div className="bg-white/80 border border-slate-200 p-6 rounded-2xl shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
             
-            <h3 className="text-sm font-pixel text-slate-300 uppercase tracking-widest mb-6 flex items-center gap-2">
-              <Cpu className="w-4 h-4 text-purple-400" />
+            <h3 className="text-xs font-pixel text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2 font-bold">
+              <Cpu className="w-4 h-4 text-indigo-500" />
               Cognitive AI Co-Processors
             </h3>
 
             <div className="space-y-4 font-mono text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-slate-400 uppercase tracking-wider block font-bold">Ollama API URL</label>
+                  <label className="text-slate-450 uppercase tracking-widest block font-bold text-[9px]">Ollama API URL</label>
                   <input
                     type="text"
                     value={ollamaUrl}
                     onChange={(e) => setOllamaUrl(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-300 focus:outline-none focus:border-purple-500 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all shadow-inner"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-slate-400 uppercase tracking-wider block font-bold">Default Model seed</label>
+                  <label className="text-slate-455 uppercase tracking-widest block font-bold text-[9px]">Default Model Seed</label>
                   <input
                     type="text"
                     value={ollamaModel}
                     onChange={(e) => setOllamaModel(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-300 focus:outline-none focus:border-purple-500 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all shadow-inner"
                   />
                 </div>
               </div>
 
               <div className="space-y-2 pt-2">
-                <label className="text-slate-400 uppercase tracking-wider block font-bold">AnythingLLM Workspace URL</label>
+                <label className="text-slate-450 uppercase tracking-widest block font-bold text-[9px]">AnythingLLM Workspace URL</label>
                 <input
                   type="text"
                   value={anythingLlmUrl}
                   onChange={(e) => setAnythingLlmUrl(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-300 focus:outline-none focus:border-purple-500 transition-all"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all shadow-inner"
                 />
               </div>
             </div>
           </div>
 
           {/* Retro OS Controls */}
-          <div className="glass-panel border border-slate-800 p-6 rounded-2xl shadow-xl bg-slate-900/40 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-emerald-500"></div>
+          <div className="bg-white/80 border border-slate-200 p-6 rounded-2xl shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-450 to-emerald-450"></div>
 
-            <h3 className="text-sm font-pixel text-slate-300 uppercase tracking-widest mb-6 flex items-center gap-2">
-              <Eye className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-xs font-pixel text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2 font-bold">
+              <Eye className="w-4 h-4 text-indigo-500" />
               OS Interface Calibration
             </h3>
 
-            <div className="space-y-4 font-mono text-xs text-slate-300">
-              <div className="flex items-center justify-between p-3 bg-slate-950/60 border border-slate-850 rounded-xl">
+            <div className="space-y-4 font-mono text-xs text-slate-600">
+              <div className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-xl shadow-inner">
                 <div>
-                  <p className="font-bold text-slate-200 uppercase tracking-wider">Cathode CRT Scanlines</p>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Render vintage scanline overlays</p>
+                  <p className="font-bold text-slate-800 uppercase tracking-wider">Cathode CRT Scanlines</p>
+                  <p className="text-[9px] text-slate-400 uppercase tracking-widest mt-1 font-bold">Render vintage scanline overlays</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={scanlines}
                   onChange={(e) => setScanlines(e.target.checked)}
-                  className="w-4 h-4 accent-cyan-500 cursor-pointer"
+                  className="w-4 h-4 accent-indigo-650 cursor-pointer"
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-slate-950/60 border border-slate-850 rounded-xl">
+              <div className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-xl shadow-inner">
                 <div>
-                  <p className="font-bold text-slate-200 uppercase tracking-wider">Phosphor CRT Screen Glow</p>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Enable visual glassmorphic screen reflections</p>
+                  <p className="font-bold text-slate-800 uppercase tracking-wider">Phosphor CRT Screen Glow</p>
+                  <p className="text-[9px] text-slate-400 uppercase tracking-widest mt-1 font-bold">Enable visual glassmorphic reflections</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={crtGlow}
                   onChange={(e) => setCrtGlow(e.target.checked)}
-                  className="w-4 h-4 accent-cyan-500 cursor-pointer"
+                  className="w-4 h-4 accent-indigo-650 cursor-pointer"
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-slate-950/60 border border-slate-850 rounded-xl">
+              <div className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-xl shadow-inner">
                 <div>
-                  <p className="font-bold text-slate-200 uppercase tracking-wider">Synthesized Audio Alerts</p>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Play retro synthesized sounds on alerts</p>
+                  <p className="font-bold text-slate-800 uppercase tracking-wider">Synthesized Audio Alerts</p>
+                  <p className="text-[9px] text-slate-400 uppercase tracking-widest mt-1 font-bold">Play retro alerts on node termination</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={audioAlerts}
                   onChange={(e) => setAudioAlerts(e.target.checked)}
-                  className="w-4 h-4 accent-cyan-500 cursor-pointer"
+                  className="w-4 h-4 accent-indigo-650 cursor-pointer"
                 />
               </div>
             </div>
@@ -169,48 +171,48 @@ export default function SettingsPage() {
 
         {/* Right 1 Column: Diagnostic details */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="glass-panel border border-slate-800 p-6 rounded-2xl shadow-xl bg-slate-900/40 relative overflow-hidden h-full flex flex-col justify-between">
+          <div className="bg-white/80 border border-slate-200 p-6 rounded-2xl shadow-sm relative overflow-hidden h-full flex flex-col justify-between">
             <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-800/60 pb-4">
-                <h4 className="text-xs font-pixel text-slate-300 uppercase tracking-widest flex items-center gap-2">
-                  <Database className="w-5 h-5 text-green-400" />
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h4 className="text-xs font-pixel text-slate-800 uppercase tracking-widest flex items-center gap-2 font-bold">
+                  <Database className="w-5 h-5 text-emerald-500" />
                   Primary DB Node
                 </h4>
-                <span className="text-[9px] font-mono bg-green-950 text-green-400 border border-green-800/40 px-2 py-0.5 rounded uppercase tracking-wider">ONLINE</span>
+                <span className="text-[9px] font-mono bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-lg uppercase tracking-wider font-bold">ONLINE</span>
               </div>
 
-              <div className="space-y-4 font-mono text-[11px] text-slate-400 leading-relaxed">
+              <div className="space-y-4 font-mono text-[11px] text-slate-500 leading-relaxed font-semibold">
                 <div>
-                  <span className="text-slate-500 block uppercase tracking-wider mb-1">Session Host Pooler</span>
-                  <span className="text-slate-200 break-words block">{dbHost}</span>
+                  <span className="text-slate-400 block uppercase tracking-widest mb-1 font-bold text-[9px]">Session Host Pooler</span>
+                  <span className="text-slate-800 break-words block font-bold">{dbHost}</span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="text-slate-500 block uppercase tracking-wider mb-1">Port</span>
-                    <span className="text-slate-200">{dbPort}</span>
+                    <span className="text-slate-400 block uppercase tracking-widest mb-1 font-bold text-[9px]">Port</span>
+                    <span className="text-slate-800 font-bold">{dbPort}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block uppercase tracking-wider mb-1">Type</span>
-                    <span className="text-slate-200">PostgreSQL</span>
+                    <span className="text-slate-400 block uppercase tracking-widest mb-1 font-bold text-[9px]">Type</span>
+                    <span className="text-slate-800 font-bold">PostgreSQL</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-8 border-t border-slate-850 mt-8 space-y-3">
+            <div className="pt-8 border-t border-slate-100 mt-8 space-y-3">
               <button
                 type="submit"
                 disabled={saving}
-                className="w-full bg-cyan-950/40 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-900/60 font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2 group shadow-[0_0_15px_rgba(6,182,212,0.3)] disabled:opacity-50 disabled:cursor-not-allowed uppercase font-mono text-xs tracking-wider"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-md shadow-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed uppercase font-mono text-xs tracking-wider cursor-pointer border-transparent"
               >
                 {saving ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Synchronizing...</span>
+                    <RefreshCw className="w-4 h-4 animate-spin text-white" />
+                    <span>Saving...</span>
                   </>
                 ) : (
                   <>
-                    <Save className="w-4 h-4" />
+                    <Save className="w-4 h-4 text-white" />
                     <span>Save Calibration</span>
                   </>
                 )}

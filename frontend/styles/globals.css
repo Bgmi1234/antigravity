@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617; /* Slate 950 */
-  --foreground: #f8fafc; /* Slate 50 */
-  --neon-cyan: #06b6d4;
-  --neon-purple: #a855f7;
-  --neon-pink: #ec4899;
+  --background: #f8fafc; /* Slate 50 */
+  --foreground: #0f172a; /* Slate 900 */
+  --neon-cyan: #4f46e5; /* Royal Indigo */
+  --neon-purple: #6366f1; /* Premium Indigo */
+  --neon-pink: #db2777; /* Rose-Pink */
+  --neon-green: #10b981; /* Emerald */
 }
 
 @theme inline {
@@ -22,64 +23,72 @@ body {
   font-family: var(--font-sans), sans-serif;
 }
 
-/* Custom Cyberpunk Scrollbar */
+/* Custom Light-Theme Professional Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a; 
+  background: #f1f5f9; 
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155; 
+  background: #cbd5e1; 
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--neon-cyan);
+  background: var(--neon-purple);
 }
 
-/* Utilities */
+/* Light Mode Soft Neon Shadows */
 .neon-text-cyan {
-  text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(79, 70, 229, 0.2), 0 0 15px rgba(79, 70, 229, 0.1);
 }
 
 .neon-text-purple {
-  text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple);
+  text-shadow: 0 0 8px rgba(99, 102, 241, 0.2), 0 0 15px rgba(99, 102, 241, 0.1);
 }
 
 .neon-border-cyan {
-  box-shadow: 0 0 5px var(--neon-cyan), inset 0 0 5px var(--neon-cyan);
-  border-color: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(79, 70, 229, 0.15), inset 0 0 6px rgba(79, 70, 229, 0.05);
+  border-color: rgba(79, 70, 229, 0.4);
 }
 
 .neon-border-purple {
-  box-shadow: 0 0 5px var(--neon-purple), inset 0 0 5px var(--neon-purple);
-  border-color: var(--neon-purple);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.15), inset 0 0 6px rgba(99, 102, 241, 0.05);
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
+.neon-border-green {
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15), inset 0 0 6px rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+/* Frosted Premium White-Glass Panels */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 1px 1px 0 rgba(0, 0, 0, 0.02);
 }
 
 .pixel-button {
   border-bottom-width: 4px;
-  transition: all 0.1s ease;
-  @apply px-4 py-2 rounded-md bg-slate-900 text-white border border-slate-700;
+  transition: all 0.15s ease;
+  @apply px-4 py-2 rounded-md bg-white text-slate-800 border border-slate-200 shadow-sm active:translate-y-[2px] active:border-b-2;
 }
 
-/* Background Animations */
+/* Subtle Light-Mode Grid Animations */
 .bg-scanlines {
   background: linear-gradient(
     to bottom,
-    rgba(255,255,255,0),
-    rgba(255,255,255,0) 50%,
-    rgba(0,0,0,0.2) 50%,
-    rgba(0,0,0,0.2)
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(241, 245, 249, 0.5) 50%,
+    rgba(241, 245, 249, 0.5)
   );
   background-size: 100% 4px;
 }
@@ -91,8 +100,8 @@ body {
 
 .bg-animated-grid {
   background-image: 
-    linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(99, 102, 241, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.025) 1px, transparent 1px);
   background-size: 40px 40px;
   animation: pan 60s linear infinite;
 }

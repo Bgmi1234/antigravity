@@ -30,12 +30,12 @@ export default function NewEmployeePage() {
   return (
     <div className="max-w-4xl mx-auto w-full pb-12">
       <div className="mb-8 flex items-center gap-4">
-        <Link href="/employees" className="bg-slate-900/50 hover:bg-slate-800 border border-slate-700 text-slate-400 p-2 rounded-lg transition-colors">
-          <ArrowLeft className="w-5 h-5" />
+        <Link href="/employees" className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-650 p-2.5 rounded-lg transition-all shadow-sm">
+          <ArrowLeft className="w-5 h-5 text-slate-500" />
         </Link>
         <div>
-          <h1 className="text-3xl font-bold font-pixel text-slate-100 tracking-tight uppercase">Deploy Operator</h1>
-          <p className="text-cyan-400 mt-1 font-mono text-sm">Configure a new autonomous node for the network.</p>
+          <h1 className="text-3xl font-bold font-pixel text-slate-850 tracking-tight uppercase">Deploy Operator</h1>
+          <p className="text-indigo-650 font-mono text-xs uppercase tracking-widest mt-1.5 font-bold">Configure a new autonomous node for the network.</p>
         </div>
       </div>
 

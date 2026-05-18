@@ -23,6 +23,7 @@ import {
   Zap 
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export default function EmployeesList() {
   const [role, setRole] = useState<"admin" | "user">("admin");
@@ -88,7 +89,6 @@ export default function EmployeesList() {
   };
 
   useEffect(() => {
-    // Debounce search slightly
     const timer = setTimeout(() => {
       setPage(1); // Reset page on new search/filter
       fetchEmployees();
@@ -205,41 +205,43 @@ export default function EmployeesList() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 pb-12 px-4 md:px-0">
+    <div className="max-w-7xl mx-auto space-y-8 pb-12 px-4 md:px-0 text-slate-800">
+      
+      {/* Top Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold font-pixel text-slate-100 tracking-tight uppercase">Network Nodes</h1>
-          <p className="text-slate-400 mt-2 font-mono text-sm">Manage autonomous workforce operators.</p>
+          <h1 className="text-3xl font-bold font-pixel text-slate-850 tracking-tight uppercase">Network Nodes</h1>
+          <p className="text-slate-500 mt-2 font-mono text-xs uppercase tracking-widest font-bold">Manage autonomous workforce operators.</p>
         </div>
         {role === "admin" && (
           <button 
             onClick={handleOpenCreate}
-            className="bg-cyan-950/40 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-900/60 px-5 py-2.5 rounded-lg font-bold transition-all neon-text-cyan neon-border-cyan flex items-center justify-center gap-2 font-mono text-sm uppercase tracking-wider cursor-pointer"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-wider cursor-pointer shadow-md shadow-indigo-100 border-transparent"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 text-white" />
             Deploy Node
           </button>
         )}
       </div>
 
       {/* Controls Bar */}
-      <div className="glass-panel p-4 rounded-xl border-slate-800 flex flex-col sm:flex-row gap-4 relative z-10">
+      <div className="bg-white/80 p-4 rounded-xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row gap-4 relative z-10">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input 
             type="text" 
-            placeholder="Search identity or role..." 
+            placeholder="Search identity, tags, or operational role..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700 rounded-lg py-2 pl-9 pr-4 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-9 pr-4 text-xs text-slate-850 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all font-mono shadow-inner"
           />
         </div>
         <div className="relative w-full sm:w-48">
-          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <select 
             value={department}
             onChange={(e) => setDepartment(e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700 rounded-lg py-2 pl-9 pr-4 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono appearance-none cursor-pointer"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-9 pr-4 text-xs text-slate-850 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all font-mono cursor-pointer"
           >
             <option value="All">All Sectors</option>
             <option value="Engineering">Engineering</option>
@@ -251,10 +253,10 @@ export default function EmployeesList() {
       </div>
 
       {error && (
-        <div className="bg-red-950/50 border border-red-500/50 text-red-400 px-4 py-3 rounded-xl flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5" />
-          <span className="font-mono text-sm">SYS_ERROR: {error}</span>
-          <button onClick={() => fetchEmployees()} className="ml-auto underline font-bold hover:text-red-300 cursor-pointer">RETRY</button>
+        <div className="bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 rounded-xl flex items-center gap-3 font-mono text-xs font-bold shadow-sm">
+          <AlertTriangle className="w-5 h-5 text-rose-550" />
+          <span>SYS_ERROR: {error}</span>
+          <button onClick={() => fetchEmployees()} className="ml-auto underline font-bold hover:text-rose-700 cursor-pointer">RETRY</button>
         </div>
       )}
 
@@ -262,20 +264,20 @@ export default function EmployeesList() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="glass-panel rounded-xl h-64 animate-pulse bg-slate-800/20 border-slate-800/50" />
+            <div key={i} className="bg-white/50 border border-slate-200 rounded-2xl h-64 animate-pulse" />
           ))}
         </div>
       ) : employees.length === 0 ? (
-        <div className="glass-panel rounded-xl p-16 text-center border-dashed border-slate-700">
-          <Terminal className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-          <h3 className="text-xl font-bold font-sans text-slate-300 mb-2">0 NODES FOUND</h3>
-          <p className="text-slate-500 font-mono text-sm max-w-md mx-auto mb-6">No operators match the current filter criteria or the sector is empty.</p>
+        <div className="bg-white/50 rounded-2xl p-16 text-center border-2 border-dashed border-slate-250">
+          <Terminal className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+          <h3 className="text-xl font-bold font-sans text-slate-850 mb-2">0 NODES ACTIVE</h3>
+          <p className="text-slate-500 font-mono text-xs max-w-md mx-auto mb-6 uppercase tracking-widest font-bold">No active nodes match the specified core filter parameters.</p>
           {search || department !== 'All' ? (
-            <button onClick={() => { setSearch(''); setDepartment('All'); }} className="text-cyan-500 hover:text-cyan-400 font-mono text-sm underline cursor-pointer">
+            <button onClick={() => { setSearch(''); setDepartment('All'); }} className="text-indigo-650 hover:text-indigo-850 font-mono text-xs font-bold underline cursor-pointer">
               Clear Filters
             </button>
           ) : (
-            <button onClick={handleOpenCreate} className="text-cyan-500 hover:text-cyan-400 font-mono text-sm underline cursor-pointer">
+            <button onClick={handleOpenCreate} className="text-indigo-650 hover:text-indigo-850 font-mono text-xs font-bold underline cursor-pointer">
               Deploy your first node
             </button>
           )}
@@ -292,12 +294,12 @@ export default function EmployeesList() {
                   exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
                   transition={{ delay: i * 0.05 }}
                   key={employee.id}
-                  className="relative group animate-in fade-in"
+                  className="relative group"
                 >
                   {role === "admin" && (
                     <button 
                       onClick={() => handleDelete(employee.id)}
-                      className="absolute -top-3 -right-3 w-8 h-8 bg-red-950/90 border border-red-500/80 text-red-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-red-800 hover:text-white cursor-pointer shadow-lg shadow-red-950/50 font-bold"
+                      className="absolute -top-2.5 -right-2.5 w-7 h-7 bg-white border border-rose-200 text-rose-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-rose-50 hover:text-rose-700 cursor-pointer shadow-md font-mono text-sm font-bold"
                       title="Terminate Node"
                     >
                       ×
@@ -310,23 +312,23 @@ export default function EmployeesList() {
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between glass-panel p-4 rounded-xl border-slate-800">
-            <p className="text-sm font-mono text-slate-500">
+          <div className="flex items-center justify-between bg-white/80 p-4 rounded-xl border border-slate-200/80 shadow-sm relative z-10">
+            <p className="text-xs font-mono text-slate-500 font-semibold">
               Showing {(page - 1) * limit + 1} to {(page - 1) * limit + employees.length} nodes
             </p>
             <div className="flex items-center gap-2">
               <button 
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 rounded bg-slate-900 border border-slate-700 text-slate-400 hover:text-cyan-400 disabled:opacity-50 disabled:hover:text-slate-400 transition-colors cursor-pointer disabled:cursor-not-allowed"
+                className="p-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-650 hover:bg-slate-100 disabled:opacity-50 transition-colors cursor-pointer disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <span className="font-mono text-sm text-cyan-500 w-8 text-center">{page}</span>
+              <span className="font-mono text-xs font-bold text-indigo-650 w-8 text-center">{page}</span>
               <button 
                 onClick={() => setPage(p => p + 1)}
                 disabled={employees.length < limit}
-                className="p-2 rounded bg-slate-900 border border-slate-700 text-slate-400 hover:text-cyan-400 disabled:opacity-50 disabled:hover:text-slate-400 transition-colors cursor-pointer disabled:cursor-not-allowed"
+                className="p-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-650 hover:bg-slate-100 disabled:opacity-50 transition-colors cursor-pointer disabled:cursor-not-allowed"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -338,37 +340,37 @@ export default function EmployeesList() {
       {/* --- CREATE NODE MODAL --- */}
       <AnimatePresence>
         {isCreateOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="glass-panel w-full max-w-2xl rounded-2xl border border-slate-700 overflow-hidden flex flex-col relative"
+              className="bg-white w-full max-w-2xl rounded-2xl border border-slate-200 shadow-2xl overflow-hidden flex flex-col relative"
             >
               {/* Top Accent line */}
-              <div className="h-1 bg-cyan-500 w-full absolute top-0 left-0 neon-border-cyan" />
+              <div className="h-1.5 bg-indigo-600 w-full absolute top-0 left-0" />
               
-              <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50 flex justify-between items-center mt-1">
+              <div className="px-6 py-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center mt-1.5">
                 <div className="flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-cyan-400" />
-                  <h3 className="font-bold text-slate-200 font-pixel uppercase tracking-wide">Deploy Operator Node</h3>
+                  <Zap className="w-5 h-5 text-indigo-500" />
+                  <h3 className="font-bold text-slate-800 font-pixel text-[11px] uppercase tracking-wide">Deploy Operator Node</h3>
                 </div>
-                <button onClick={() => setIsCreateOpen(false)} className="text-slate-400 hover:text-slate-200 cursor-pointer">
+                <button onClick={() => setIsCreateOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <form onSubmit={handleCreateSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+              <form onSubmit={handleCreateSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto font-mono text-xs">
                 {modalError && (
-                  <div className="bg-red-950/50 border border-red-500/50 text-red-400 p-3 rounded-lg text-xs font-mono flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4" />
+                  <div className="bg-rose-50 border border-rose-200 text-rose-600 p-3 rounded-lg text-xs font-mono flex items-center gap-2 font-bold shadow-inner">
+                    <AlertTriangle className="w-4 h-4 text-rose-500" />
                     <span>ERR: {modalError}</span>
                   </div>
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Operator Name *</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Operator Name *</label>
                     <input 
                       type="text"
                       name="name"
@@ -376,30 +378,30 @@ export default function EmployeesList() {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="e.g. SKY-01 or Alex"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Role / Function</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Role / Function</label>
                     <input 
                       type="text"
                       name="role"
                       value={formData.role}
                       onChange={handleInputChange}
                       placeholder="e.g. Lead QA Agent"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Sector / Sector</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Sector / Sector</label>
                     <select
                       name="department"
                       value={formData.department}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono cursor-pointer"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono cursor-pointer"
                     >
                       <option value="Engineering">Engineering</option>
                       <option value="Marketing">Marketing</option>
@@ -408,7 +410,7 @@ export default function EmployeesList() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Initial Productivity (%)</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Initial Productivity (%)</label>
                     <input 
                       type="number"
                       name="productivity"
@@ -416,16 +418,16 @@ export default function EmployeesList() {
                       max="100"
                       value={formData.productivity}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Status</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Status</label>
                     <select
                       name="status"
                       value={formData.status}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono cursor-pointer"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono cursor-pointer"
                     >
                       <option value="Active">Active (Online)</option>
                       <option value="Training">Training</option>
@@ -435,73 +437,73 @@ export default function EmployeesList() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Avatar URL</label>
+                  <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Avatar URL</label>
                   <input 
                     type="text"
                     name="avatar"
                     value={formData.avatar}
                     onChange={handleInputChange}
                     placeholder="https://example.com/avatar.png"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Core Objective / Goal</label>
+                  <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Core Objective / Goal</label>
                   <textarea 
                     name="goal"
+                    rows={2}
                     value={formData.goal}
                     onChange={handleInputChange}
-                    placeholder="Describe this node's core objective or system instructions..."
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono h-20 resize-none"
+                    placeholder="Provide primary directives for model logic..."
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Tools / API Access (comma-separated)</label>
-                    <input 
-                      type="text"
-                      name="tools"
-                      value={formData.tools}
-                      onChange={handleInputChange}
-                      placeholder="e.g. web_search, database_read"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Approval Rules</label>
-                    <input 
-                      type="text"
-                      name="approval_rules"
-                      value={formData.approval_rules}
-                      onChange={handleInputChange}
-                      placeholder="e.g. Require admin signoff for purchases"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Allocated API Tools (JSON Array format)</label>
+                  <input 
+                    type="text"
+                    name="tools"
+                    value={formData.tools}
+                    onChange={handleInputChange}
+                    placeholder='e.g. ["web-scrape", "postgres-write"]'
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
+                  />
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-                  <button
-                    type="button"
+                <div>
+                  <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Compliance / Approval Gates</label>
+                  <input 
+                    type="text"
+                    name="approval_rules"
+                    value={formData.approval_rules}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Require admin check before Supabase updates"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
+                  />
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex justify-end gap-3 mt-4">
+                  <button 
+                    type="button" 
                     onClick={() => setIsCreateOpen(false)}
-                    className="px-4 py-2 border border-slate-700 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-900 transition-colors cursor-pointer"
+                    className="px-4 py-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
-                  <button
-                    type="submit"
+                  <button 
+                    type="submit" 
                     disabled={modalLoading}
-                    className="bg-cyan-950/40 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-900/60 px-5 py-2 rounded-lg font-semibold transition-all neon-text-cyan neon-border-cyan flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-lg transition-all flex items-center gap-2 shadow-md shadow-indigo-100 disabled:opacity-50 cursor-pointer border-transparent"
                   >
                     {modalLoading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Deploying...
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>Deploying...</span>
                       </>
                     ) : (
-                      "Confirm Deployment"
+                      <span>Deploy Node</span>
                     )}
                   </button>
                 </div>
@@ -511,69 +513,71 @@ export default function EmployeesList() {
         )}
       </AnimatePresence>
 
-      {/* --- EDIT CONFIG NODE MODAL --- */}
+      {/* --- EDIT NODE CONFIG MODAL --- */}
       <AnimatePresence>
         {isEditOpen && editingEmployee && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="glass-panel w-full max-w-2xl rounded-2xl border border-slate-700 overflow-hidden flex flex-col relative"
+              className="bg-white w-full max-w-2xl rounded-2xl border border-slate-200 shadow-2xl overflow-hidden flex flex-col relative"
             >
               {/* Top Accent line */}
-              <div className="h-1 bg-purple-500 w-full absolute top-0 left-0 neon-border-purple" />
+              <div className="h-1.5 bg-indigo-600 w-full absolute top-0 left-0" />
               
-              <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50 flex justify-between items-center mt-1">
+              <div className="px-6 py-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center mt-1.5">
                 <div className="flex items-center gap-2">
-                  <Settings className="w-5 h-5 text-purple-400" />
-                  <h3 className="font-bold text-slate-200 font-pixel uppercase tracking-wide">Configure Operator Node</h3>
+                  <Settings className="w-5 h-5 text-indigo-500" />
+                  <h3 className="font-bold text-slate-800 font-pixel text-[11px] uppercase tracking-wide">Configure: {editingEmployee.name}</h3>
                 </div>
-                <button onClick={() => setIsEditOpen(false)} className="text-slate-400 hover:text-slate-200 cursor-pointer">
+                <button onClick={() => { setIsEditOpen(false); setEditingEmployee(null); }} className="text-slate-400 hover:text-slate-600 cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <form onSubmit={handleEditSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+              <form onSubmit={handleEditSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto font-mono text-xs">
                 {modalError && (
-                  <div className="bg-red-950/50 border border-red-500/50 text-red-400 p-3 rounded-lg text-xs font-mono flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4" />
+                  <div className="bg-rose-50 border border-rose-200 text-rose-600 p-3 rounded-lg text-xs font-mono flex items-center gap-2 font-bold shadow-inner">
+                    <AlertTriangle className="w-4 h-4 text-rose-500" />
                     <span>ERR: {modalError}</span>
                   </div>
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Operator Name *</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Operator Name *</label>
                     <input 
                       type="text"
                       name="name"
                       required
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                      placeholder="e.g. SKY-01 or Alex"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Role / Function</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Role / Function</label>
                     <input 
                       type="text"
                       name="role"
                       value={formData.role}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                      placeholder="e.g. Lead QA Agent"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Sector / Sector</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Sector / Sector</label>
                     <select
                       name="department"
                       value={formData.department}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono cursor-pointer"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono cursor-pointer"
                     >
                       <option value="Engineering">Engineering</option>
                       <option value="Marketing">Marketing</option>
@@ -582,7 +586,7 @@ export default function EmployeesList() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Productivity (%)</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Node Productivity (%)</label>
                     <input 
                       type="number"
                       name="productivity"
@@ -590,16 +594,16 @@ export default function EmployeesList() {
                       max="100"
                       value={formData.productivity}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Status</label>
+                    <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Status</label>
                     <select
                       name="status"
                       value={formData.status}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono cursor-pointer"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono cursor-pointer"
                     >
                       <option value="Active">Active (Online)</option>
                       <option value="Training">Training</option>
@@ -609,69 +613,73 @@ export default function EmployeesList() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Avatar URL</label>
+                  <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Avatar URL</label>
                   <input 
                     type="text"
                     name="avatar"
                     value={formData.avatar}
                     onChange={handleInputChange}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                    placeholder="https://example.com/avatar.png"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Core Objective / Goal</label>
+                  <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Core Objective / Goal</label>
                   <textarea 
                     name="goal"
+                    rows={2}
                     value={formData.goal}
                     onChange={handleInputChange}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono h-20 resize-none"
+                    placeholder="Provide primary directives for model logic..."
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Tools / API Access (comma-separated)</label>
-                    <input 
-                      type="text"
-                      name="tools"
-                      value={formData.tools}
-                      onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5 font-bold">Approval Rules</label>
-                    <input 
-                      type="text"
-                      name="approval_rules"
-                      value={formData.approval_rules}
-                      onChange={handleInputChange}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Allocated API Tools (JSON Array format)</label>
+                  <input 
+                    type="text"
+                    name="tools"
+                    value={formData.tools}
+                    onChange={handleInputChange}
+                    placeholder='e.g. ["web-scrape", "postgres-write"]'
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
+                  />
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => setIsEditOpen(false)}
-                    className="px-4 py-2 border border-slate-700 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-900 transition-colors cursor-pointer"
+                <div>
+                  <label className="block text-[9px] font-mono uppercase text-slate-400 mb-1.5 font-bold">Compliance / Approval Gates</label>
+                  <input 
+                    type="text"
+                    name="approval_rules"
+                    value={formData.approval_rules}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Require admin check before Supabase updates"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-colors font-mono"
+                  />
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex justify-end gap-3 mt-4">
+                  <button 
+                    type="button" 
+                    onClick={() => { setIsEditOpen(false); setEditingEmployee(null); }}
+                    className="px-4 py-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
-                  <button
-                    type="submit"
+                  <button 
+                    type="submit" 
                     disabled={modalLoading}
-                    className="bg-purple-950/40 border border-purple-500/50 text-purple-400 hover:bg-purple-900/60 px-5 py-2 rounded-lg font-semibold transition-all neon-text-purple neon-border-purple flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-lg transition-all flex items-center gap-2 shadow-md shadow-indigo-100 disabled:opacity-50 cursor-pointer border-transparent"
                   >
                     {modalLoading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Saving...
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>Saving Changes...</span>
                       </>
                     ) : (
-                      "Apply Changes"
+                      <span>Save Config</span>
                     )}
                   </button>
                 </div>
@@ -680,6 +688,7 @@ export default function EmployeesList() {
           </div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }

@@ -170,7 +170,11 @@ export default function LoginPage() {
 
                 <button
                   type="button"
-                  onClick={() => router.push("/")}
+                  onClick={() => {
+                    document.cookie = "is_guest=true; path=/; max-age=31536000";
+                    router.push("/");
+                    router.refresh();
+                  }}
                   className="w-full mt-3 bg-slate-900 hover:bg-slate-800 text-cyan-400 font-bold py-3 rounded-lg border border-cyan-500/30 transition-all flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-widest"
                 >
                   <span>⚡ GUEST / DEMO BYPASS</span>

@@ -31,6 +31,8 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
 
+  const isGuest = request.cookies.get('is_guest')?.value === 'true'
+
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -39,6 +41,7 @@ export async function updateSession(request: NextRequest) {
   
   if (
     !user &&
+    !isGuest &&
     !isAuthRoute
   ) {
     // no user, potentially respond by redirecting the user to the login page
@@ -47,7 +50,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
   
-  if (user && isAuthRoute) {
+  if ((user || isGuest) && isAuthRoute) {
     // user is logged in, redirect them away from auth pages
     const url = request.nextUrl.clone()
     url.pathname = '/'

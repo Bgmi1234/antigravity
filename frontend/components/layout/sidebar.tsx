@@ -80,6 +80,7 @@ export function Sidebar() {
         </div>
         <button 
           onClick={async () => {
+            document.cookie = "is_guest=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
             const { createClient } = await import("@/lib/supabase/client");
             const supabase = createClient();
             await supabase.auth.signOut();

@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, CheckSquare, BarChart, Settings, LogOut, Terminal, Layers } from "lucide-react";
+import { LayoutDashboard, Users, CheckSquare, BarChart, Settings, LogOut, Terminal, Layers, ShieldAlert, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -14,6 +15,21 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [role, setRole] = useState<"admin" | "user">("admin");
+
+  useEffect(() => {
+    const savedRole = localStorage.getItem("emplod_role") as "admin" | "user" | null;
+    if (savedRole) {
+      setRole(savedRole);
+    }
+  }, []);
+
+  const toggleRole = () => {
+    const newRole = role === "admin" ? "user" : "admin";
+    setRole(newRole);
+    localStorage.setItem("emplod_role", newRole);
+    window.dispatchEvent(new Event("role-change"));
+  };
 
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-950/90 backdrop-blur-xl p-6 hidden md:flex flex-col z-40 relative shadow-[5px_0_15px_rgba(0,0,0,0.5)]">
@@ -69,15 +85,57 @@ export function Sidebar() {
 
       {/* User / Logout */}
       <div className="mt-auto pt-6">
+        {/* Role Toggle Switcher */}
+        <button
+          onClick={toggleRole}
+          type="button"
+          className={cn(
+            "w-full mb-3 py-2 rounded flex items-center justify-center gap-2 text-xs font-semibold font-mono border transition-all uppercase tracking-widest cursor-pointer",
+            role === "admin"
+              ? "bg-purple-950/30 hover:bg-purple-900/40 border-purple-500/30 text-purple-400"
+              : "bg-cyan-950/30 hover:bg-cyan-900/40 border-cyan-500/30 text-cyan-400"
+          )}
+        >
+          {role === "admin" ? (
+            <>
+              <ShieldAlert className="w-3.5 h-3.5 animate-pulse" />
+              <span>Admin Mode</span>
+            </>
+          ) : (
+            <>
+              <User className="w-3.5 h-3.5 animate-pulse" />
+              <span>Operator Mode</span>
+            </>
+          )}
+        </button>
+
         <div className="bg-slate-900/50 border border-slate-800 p-3 rounded-lg flex items-center gap-3 mb-3 shadow-inner">
-          <div className="w-10 h-10 bg-pink-950 border border-pink-500/50 flex items-center justify-center relative pixel-button border-b-2">
-            <span className="font-pixel text-pink-400 text-[10px]">AD</span>
+          <div className={cn(
+            "w-10 h-10 border flex items-center justify-center relative pixel-button border-b-2",
+            role === "admin"
+              ? "bg-pink-950 border-pink-500/50"
+              : "bg-cyan-950 border-cyan-500/50"
+          )}>
+            <span className={cn(
+              "font-pixel text-[10px]",
+              role === "admin" ? "text-pink-400" : "text-cyan-400"
+            )}>
+              {role === "admin" ? "AD" : "OP"}
+            </span>
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="text-xs font-bold text-slate-200 truncate font-sans">CEO / Admin</p>
-            <p className="text-[10px] text-pink-400 font-mono truncate uppercase tracking-widest">Level 99 Boss</p>
+            <p className="text-xs font-bold text-slate-200 truncate font-sans">
+              {role === "admin" ? "CEO / Admin" : "Standard Operator"}
+            </p>
+            <p className={cn(
+              "text-[10px] font-mono truncate uppercase tracking-widest",
+              role === "admin" ? "text-pink-400" : "text-cyan-400"
+            )}>
+              {role === "admin" ? "Level 99 Boss" : "Sect_04 // Level 1"}
+            </p>
           </div>
         </div>
+
         <button 
           onClick={async () => {
             document.cookie = "is_guest=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";

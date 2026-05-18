@@ -9,6 +9,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 export default function Dashboard() {
+  const [role, setRole] = useState<"admin" | "user">("admin");
+
+  useEffect(() => {
+    const savedRole = localStorage.getItem("emplod_role") as "admin" | "user" | null;
+    if (savedRole) {
+      setRole(savedRole);
+    }
+
+    const handleRoleChange = () => {
+      const updatedRole = localStorage.getItem("emplod_role") as "admin" | "user" | null;
+      if (updatedRole) {
+        setRole(updatedRole);
+      }
+    };
+    window.addEventListener("role-change", handleRoleChange);
+    return () => window.removeEventListener("role-change", handleRoleChange);
+  }, []);
+
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -147,9 +165,13 @@ export default function Dashboard() {
               <div className="absolute inset-0 bg-scanlines opacity-50"></div>
               <Terminal className="w-16 h-16 text-slate-600 mx-auto mb-6 relative z-10" />
               <p className="text-slate-400 font-pixel text-sm uppercase tracking-widest relative z-10 mb-6">NO AGENTS DEPLOYED</p>
-              <Link href="/employees/new" className="relative z-10 bg-cyan-950 border border-cyan-500 text-cyan-400 px-6 py-3 rounded uppercase font-bold text-xs tracking-widest pixel-button hover:bg-cyan-900 transition-colors">
-                Purchase Node
-              </Link>
+              {role === "admin" ? (
+                <Link href="/employees/new" className="relative z-10 bg-cyan-950 border border-cyan-500 text-cyan-400 px-6 py-3 rounded uppercase font-bold text-xs tracking-widest pixel-button hover:bg-cyan-900 transition-colors">
+                  Purchase Node
+                </Link>
+              ) : (
+                <p className="text-slate-500 font-mono text-xs uppercase tracking-widest relative z-10">Awaiting supervisor deployment sequence.</p>
+              )}
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 gap-6">

@@ -6,6 +6,26 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Topbar() {
+  const [role, setRole] = useState<"admin" | "user">("admin");
+
+  useEffect(() => {
+    // Initial fetch
+    const savedRole = localStorage.getItem("emplod_role") as "admin" | "user" | null;
+    if (savedRole) {
+      setRole(savedRole);
+    }
+
+    // Listener for real-time role changes
+    const handleRoleChange = () => {
+      const updatedRole = localStorage.getItem("emplod_role") as "admin" | "user" | null;
+      if (updatedRole) {
+        setRole(updatedRole);
+      }
+    };
+    window.addEventListener("role-change", handleRoleChange);
+    return () => window.removeEventListener("role-change", handleRoleChange);
+  }, []);
+
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
 
@@ -96,13 +116,15 @@ export function Topbar() {
           </AnimatePresence>
         </div>
 
-        <Link 
-          href="/employees/new"
-          className="flex items-center gap-2 bg-cyan-950/80 border-cyan-500/50 text-cyan-400 hover:bg-cyan-900 px-5 py-2.5 rounded text-xs font-bold transition-all neon-border-cyan group pixel-button uppercase tracking-wider shadow-[0_0_15px_rgba(6,182,212,0.2)]"
-        >
-          <Cpu className="w-4 h-4 group-hover:animate-pulse" />
-          Deploy Agent
-        </Link>
+        {role === "admin" && (
+          <Link 
+            href="/employees/new"
+            className="flex items-center gap-2 bg-cyan-950/80 border-cyan-500/50 text-cyan-400 hover:bg-cyan-900 px-5 py-2.5 rounded text-xs font-bold transition-all neon-border-cyan group pixel-button uppercase tracking-wider shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+          >
+            <Cpu className="w-4 h-4 group-hover:animate-pulse" />
+            Deploy Agent
+          </Link>
+        )}
       </div>
     </header>
   );

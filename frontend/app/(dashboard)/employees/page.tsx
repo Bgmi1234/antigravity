@@ -25,6 +25,24 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function EmployeesList() {
+  const [role, setRole] = useState<"admin" | "user">("admin");
+
+  useEffect(() => {
+    const savedRole = localStorage.getItem("emplod_role") as "admin" | "user" | null;
+    if (savedRole) {
+      setRole(savedRole);
+    }
+
+    const handleRoleChange = () => {
+      const updatedRole = localStorage.getItem("emplod_role") as "admin" | "user" | null;
+      if (updatedRole) {
+        setRole(updatedRole);
+      }
+    };
+    window.addEventListener("role-change", handleRoleChange);
+    return () => window.removeEventListener("role-change", handleRoleChange);
+  }, []);
+
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -193,13 +211,15 @@ export default function EmployeesList() {
           <h1 className="text-3xl font-bold font-pixel text-slate-100 tracking-tight uppercase">Network Nodes</h1>
           <p className="text-slate-400 mt-2 font-mono text-sm">Manage autonomous workforce operators.</p>
         </div>
-        <button 
-          onClick={handleOpenCreate}
-          className="bg-cyan-950/40 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-900/60 px-5 py-2.5 rounded-lg font-bold transition-all neon-text-cyan neon-border-cyan flex items-center justify-center gap-2 font-mono text-sm uppercase tracking-wider cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          Deploy Node
-        </button>
+        {role === "admin" && (
+          <button 
+            onClick={handleOpenCreate}
+            className="bg-cyan-950/40 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-900/60 px-5 py-2.5 rounded-lg font-bold transition-all neon-text-cyan neon-border-cyan flex items-center justify-center gap-2 font-mono text-sm uppercase tracking-wider cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            Deploy Node
+          </button>
+        )}
       </div>
 
       {/* Controls Bar */}
@@ -274,13 +294,15 @@ export default function EmployeesList() {
                   key={employee.id}
                   className="relative group animate-in fade-in"
                 >
-                  <button 
-                    onClick={() => handleDelete(employee.id)}
-                    className="absolute -top-3 -right-3 w-8 h-8 bg-red-950/90 border border-red-500/80 text-red-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-red-800 hover:text-white cursor-pointer shadow-lg shadow-red-950/50 font-bold"
-                    title="Terminate Node"
-                  >
-                    ×
-                  </button>
+                  {role === "admin" && (
+                    <button 
+                      onClick={() => handleDelete(employee.id)}
+                      className="absolute -top-3 -right-3 w-8 h-8 bg-red-950/90 border border-red-500/80 text-red-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-red-800 hover:text-white cursor-pointer shadow-lg shadow-red-950/50 font-bold"
+                      title="Terminate Node"
+                    >
+                      ×
+                    </button>
+                  )}
                   <EmployeeCard employee={employee} onEdit={handleOpenEdit} />
                 </motion.div>
               ))}
